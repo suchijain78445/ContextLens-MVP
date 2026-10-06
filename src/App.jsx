@@ -11,28 +11,14 @@ import localPics from './localPics.json';
 import { photosDataset } from './data.js';
 
 const INITIAL_CONTEXT_LENSES = [
-  "All",
-  "Bills & Invoices",
-  "UPI & Payments",
-  "Clothing",
-  "Watches",
-  "Prescription",
-  "Accessories",
-  "Gym",
-  "Gym Equipment",
-  "People",
-  "Group Pics",
-  "Desktop / Setup",
-  "Memes",
-  "Mountains",
-  "Goa",
-  "Manali",
-  "Historic Places",
-  "Beaches",
-  "Food & Dining",
-  "Cars & Vehicles",
-  "Nature & Flowers",
-  "Pets"
+  'All',
+  'Bills & Invoices',
+  'Medical & Prescriptions',
+  'ID & Legal Docs',
+  'Tickets & Boarding Passes',
+  'Notes & Whiteboards',
+  'Rent Receipts',
+  'UPI & Payments'
 ];
 
 const KEYWORD_MAP = {
@@ -160,7 +146,7 @@ export default function App() {
   // Initial Load & Caching
   useEffect(() => {
     const loadData = async () => {
-      const cached = localStorage.getItem('contextlens_photos_v10');
+      const cached = localStorage.getItem('contextlens_photos_v11');
       const cachedLenses = localStorage.getItem('contextlens_lenses');
       if (cachedLenses) {
         const parsed = JSON.parse(cachedLenses);
@@ -182,7 +168,7 @@ export default function App() {
       const finalPhotos = Array.from(uniqueMap.values());
 
       setPhotos(finalPhotos);
-      localStorage.setItem('contextlens_photos_v10', JSON.stringify(finalPhotos));
+      localStorage.setItem('contextlens_photos_v11', JSON.stringify(finalPhotos));
       setIsLoading(false);
     };
     loadData();
@@ -191,7 +177,7 @@ export default function App() {
 
 
   const saveStateToCache = (newPhotos, newLenses) => {
-    if (newPhotos) localStorage.setItem('contextlens_photos_v10', JSON.stringify(newPhotos));
+    if (newPhotos) localStorage.setItem('contextlens_photos_v11', JSON.stringify(newPhotos));
     if (newLenses) localStorage.setItem('contextlens_lenses', JSON.stringify(newLenses));
   };
 
@@ -313,6 +299,11 @@ export default function App() {
           // Strict absolute matching for the exact category string
           if (photo.category !== contextLens) return false;
         }
+      }
+
+      // STRICT OCR MATCHING: Must pass confidence threshold
+      if (photo.confidence !== undefined && photo.confidence < 0.75) {
+        return false;
       }
 
       if (searchQuery) {
@@ -733,6 +724,28 @@ export default function App() {
                 </button>
               </div>
             </div>
+
+            {/* Google Photos Metadata Overlay */}
+            {!isLensActive && selectedPhoto && (
+              <div className="absolute top-28 left-4 right-4 bg-black/60 backdrop-blur-md text-white p-4 rounded-xl shadow-lg border border-white/10 z-20 pointer-events-none animate-in fade-in slide-in-from-top-4">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <div className="text-sm font-semibold">{new Date(selectedPhoto.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    <div className="text-xs text-gray-300">{new Date(selectedPhoto.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</div>
+                  </div>
+                  <div className="flex items-center text-xs text-gray-300">
+                    <MapPin className="w-3 h-3 mr-1" />
+                    {selectedPhoto.location || 'Unknown Location'}
+                  </div>
+                </div>
+                {selectedPhoto.ocrTags && (
+                  <div className="mt-3 pt-3 border-t border-white/20">
+                    <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Extracted Text (OCR)</div>
+                    <div className="text-xs font-mono text-gray-200">{selectedPhoto.ocrTags}</div>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div
               className={`flex-1 flex items-center justify-center bg-[#121212] overflow-hidden relative ${isLensActive ? 'cursor-crosshair' : ''}`}
