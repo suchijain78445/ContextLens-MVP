@@ -16,8 +16,6 @@ const INITIAL_CONTEXT_LENSES = [
   'Medical & Prescriptions',
   'ID & Legal Docs',
   'Tickets & Boarding Passes',
-  'Notes & Whiteboards',
-  'Rent Receipts',
   'UPI & Payments'
 ];
 
@@ -146,7 +144,7 @@ export default function App() {
   // Initial Load & Caching
   useEffect(() => {
     const loadData = async () => {
-      const cached = localStorage.getItem('contextlens_photos_v12');
+      const cached = localStorage.getItem('contextlens_photos_v13');
       const cachedLenses = localStorage.getItem('contextlens_lenses');
       if (cachedLenses) {
         const parsed = JSON.parse(cachedLenses);
@@ -160,8 +158,6 @@ export default function App() {
         // Use BOTH local mapping and the massive fallback verified data library
         basePhotos = [...photosDataset, ...localPics];
       }
-      // STRICTLY limit to only the defined INITIAL categories. Drop everything else.
-      basePhotos = basePhotos.filter(photo => INITIAL_CONTEXT_LENSES.includes(photo.category));
       
       const uniqueMap = new globalThis.Map();
       basePhotos.forEach(item => {
@@ -170,7 +166,7 @@ export default function App() {
       const finalPhotos = Array.from(uniqueMap.values());
 
       setPhotos(finalPhotos);
-      localStorage.setItem('contextlens_photos_v12', JSON.stringify(finalPhotos));
+      localStorage.setItem('contextlens_photos_v13', JSON.stringify(finalPhotos));
       setIsLoading(false);
     };
     loadData();
@@ -179,7 +175,7 @@ export default function App() {
 
 
   const saveStateToCache = (newPhotos, newLenses) => {
-    if (newPhotos) localStorage.setItem('contextlens_photos_v12', JSON.stringify(newPhotos));
+    if (newPhotos) localStorage.setItem('contextlens_photos_v13', JSON.stringify(newPhotos));
     if (newLenses) localStorage.setItem('contextlens_lenses', JSON.stringify(newLenses));
   };
 

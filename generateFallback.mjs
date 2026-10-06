@@ -9,7 +9,25 @@ const categories = {
   "Tickets & Boarding Passes": "flight boarding pass train ticket event pass",
   "Notes & Whiteboards": "meeting whiteboard handwritten notes sticky notes",
   "Rent Receipts": "rent payment receipt house lease document",
-  "UPI & Payments": "mobile payment screen qr code digital transaction"
+  "UPI & Payments": "mobile payment screen qr code digital transaction",
+  "Clothing": "shirts jeans wardrobe apparel sweaters",
+  "Watches": "wristwatches chronographs digital watches",
+  "Accessories": "sunglasses leather wallets jewelry handbags",
+  "Gym": "gym workout lifting weights fitness training",
+  "Gym Equipment": "dumbbells bench press treadmills barbells",
+  "People": "candid smiling portraits outdoor headshots",
+  "Group Pics": "group selfies friend gatherings party",
+  "Desktop / Setup": "clean workstation desks dual-monitor coding laptop",
+  "Memes": "funny meme reaction format",
+  "Mountains": "snow-capped mountain peaks hiking trails",
+  "Goa": "tropical beaches palm trees beach shack",
+  "Manali": "snow valleys cedar pines mountain river",
+  "Historic Places": "ancient forts heritage palaces monuments",
+  "Beaches": "sunny coastline ocean waves shoreline",
+  "Food & Dining": "plated restaurant food gourmet dishes cafe breakfast",
+  "Cars & Vehicles": "sports cars city traffic clean vehicle",
+  "Nature & Flowers": "botanical gardens blooming flora green forests",
+  "Pets": "cute puppies golden retrievers domestic cats"
 };
 
 const locations = ['Indore, MP', 'Bangalore, KA', 'Mumbai, MH', 'Delhi, DL', 'Pune, MH'];
